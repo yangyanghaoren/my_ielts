@@ -115,10 +115,11 @@ function matchesPriorityFilter(item) {
   }
 }
 
-const isFilterActive = computed(() => hasImportanceSelection.value || priorityFilter.value !== 'all')
-
-const loaded = ref(false)
 const refVocabulary = reactive(vocabulary)
+const searchKeyword = computed(() => keyword.value.trim().toLowerCase())
+const currentChapter = computed(() => refVocabulary[category.value])
+const isPriorityFilterActive = computed(() => hasImportanceSelection.value || priorityFilter.value !== 'all')
+const isFilterActive = computed(() => isPriorityFilterActive.value || !!searchKeyword.value)
 
 const extraOverrides = loadExtraOverrides()
 for (const cat of Object.values(refVocabulary)) {
@@ -130,59 +131,47 @@ for (const cat of Object.values(refVocabulary)) {
   }
 }
 
+function isMatchedWord(item, keywordValue) {
+  if (item.word.some(word => word.toLowerCase().includes(keywordValue)))
+    return true
+
+  return [item.pos, item.meaning, item.example, item.extra]
+    .some(value => (value || '').toLowerCase().includes(keywordValue))
+}
+
+function matchesWordFilters(item) {
+  if (!matchesPriorityFilter(item))
+    return false
+  if (!searchKeyword.value)
+    return true
+  return isMatchedWord(item, searchKeyword.value)
+}
+
+const filteredWordGroups = computed(() => {
+  const chapter = currentChapter.value
+  if (!chapter)
+    return []
+
+  return chapter.words
+    .map(group => group.filter(item => matchesWordFilters(item)))
+    .filter(group => group.length > 0)
+})
+
 const filteredWordCount = computed(() => {
-  const cur = refVocabulary[category.value]
-  let count = 0
-  for (const group of cur.words) {
-    for (const item of group) {
-      if (matchesPriorityFilter(item))
-        count++
-    }
-  }
-  return count
+  return filteredWordGroups.value.reduce((total, group) => total + group.length, 0)
 })
 
 const filteredIndexMap = computed(() => {
   const map = new Map()
   if (!isFilterActive.value)
     return map
-  const cur = refVocabulary[category.value]
+
   let idx = 0
-  for (const group of cur.words) {
-    for (const item of group) {
-      if (matchesPriorityFilter(item))
-        map.set(item.id, ++idx)
-    }
+  for (const group of filteredWordGroups.value) {
+    for (const item of group)
+      map.set(item.id, ++idx)
   }
   return map
-})
-
-const wordList = computed(() => {
-  const result = structuredClone(vocabulary) // deep clone
-  // const keywordValue = keyword.value.trim().toLowerCase()
-  const categoryValue = category.value
-
-  if (categoryValue !== '') {
-    // for (const key in result) {
-    //   if (key !== categoryValue)
-    //     delete result[key]
-    // }
-    return { [categoryValue]: result[categoryValue] }
-  }
-
-  /* if (keywordValue !== '') {
-    for (const key in result) {
-      const category = result[key]
-      const words = []
-      category.words.forEach((group) => {
-        words.push(group.filter((item) => {
-          return item.word.toLowerCase().includes(keywordValue)
-        }))
-      })
-      category.words = words
-    }
-  } */
-  return {}
 })
 
 watch(category, (newVal, oldVal) => {
@@ -213,8 +202,6 @@ function calcStats() {
 }
 
 onMounted(() => {
-  loaded.value = true
-
   // 只能同时播放一个音频
   const audioTags = document.getElementsByTagName('audio')
   for (const audio of audioTags) {
@@ -350,10 +337,10 @@ function copyAllError() {
           <span class="text-base font-normal text-gray-500 dark:text-gray-400">涵盖雅思必备核心词，逻辑词群记忆法</span>
         </div>
         <div class="items-center sm:flex">
-          <div class="flex items-center">
+          <div class="flex flex-wrap items-center gap-2">
             <select
               v-model="category"
-              class="block w-full flex-1 border border-gray-300 rounded-lg bg-gray-50 p-2.5 text-sm text-gray-900 dark:border-gray-600 focus:border-blue-500 dark:bg-gray-700 dark:text-white focus:ring-blue-500 dark:focus:border-blue-500 dark:focus:ring-blue-500 dark:placeholder-gray-400"
+              class="block min-w-48 flex-1 border border-gray-300 rounded-lg bg-gray-50 p-2.5 text-sm text-gray-900 dark:border-gray-600 focus:border-blue-500 dark:bg-gray-700 dark:text-white focus:ring-blue-500 dark:focus:border-blue-500 dark:focus:ring-blue-500 dark:placeholder-gray-400"
             >
               <!-- <option value="">
                 全部章节
@@ -362,7 +349,7 @@ function copyAllError() {
                 {{ k }}
               </option>
             </select>
-            <div ref="filterDropdownRef" class="relative ml-2">
+            <div ref="filterDropdownRef" class="relative">
               <button
                 type="button"
                 class="w-56 flex items-center justify-between border border-gray-300 rounded-lg bg-gray-50 p-2.5 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
@@ -404,19 +391,27 @@ function copyAllError() {
                 </label>
               </div>
             </div>
-            <!-- <input type="text" name="email" class="ml-3 block w-full border border-gray-300 rounded-lg bg-gray-50 p-2.5 text-gray-900 dark:border-gray-600 focus:border-primary-500 dark:bg-gray-700 sm:text-sm dark:text-white focus:ring-primary-500 dark:focus:border-primary-500 dark:focus:ring-primary-500 dark:placeholder-gray-400" placeholder="关键词"> -->
-            <!-- <div class="relative ml-2 flex-1">
+            <div class="relative min-w-64 flex-1 sm:flex-none">
               <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                <svg class="h-4 w-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
-                </svg>
+                <i class="i-ph-magnifying-glass-bold h-4 w-4 text-gray-500 dark:text-gray-400" />
               </div>
-              <input v-model="keyword" type="search"
-                class="block w-full border border-gray-300 rounded-lg bg-gray-50 p-2.5 pl-10 text-sm text-gray-900 dark:border-gray-600 focus:border-blue-500 dark:bg-gray-700 dark:text-white focus:ring-blue-500 dark:focus:border-blue-500 dark:focus:ring-blue-500 dark:placeholder-gray-400"
-                placeholder="Search">
-            </div> -->
+              <input
+                v-model="keyword"
+                type="search"
+                class="block w-full border border-gray-300 rounded-lg bg-gray-50 p-2.5 pl-10 pr-10 text-sm text-gray-900 dark:border-gray-600 focus:border-blue-500 dark:bg-gray-700 dark:text-white focus:ring-blue-500 dark:focus:border-blue-500 dark:focus:ring-blue-500 dark:placeholder-gray-400"
+                placeholder="搜索单词/词义/例句"
+                @keydown.stop
+              >
+              <button
+                v-if="keyword"
+                type="button"
+                class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 dark:text-gray-500 hover:text-gray-700 dark:hover:text-gray-200"
+                title="清空搜索"
+                @click="keyword = ''"
+              >
+                <i class="i-ph-x-bold h-4 w-4" />
+              </button>
+            </div>
             <label class="ml-2 inline-flex cursor-pointer items-center">
               <input v-model="isTrainingModel" type="checkbox" class="peer sr-only">
               <div
@@ -492,7 +487,9 @@ function copyAllError() {
                         <div class="flex flex-1 items-center">
                           <span class="text-lg">{{ category }}</span>
                           （ {{ refVocabulary[category].groupCount }} 组 {{ refVocabulary[category].wordCount }} 个词 ）
-                          <span v-if="isFilterActive">，已筛选 {{ filteredWordCount }} 个词</span>
+                          <span v-if="isFilterActive" class="ml-2 text-gray-500 dark:text-gray-200">
+                            已筛选/匹配 {{ filteredWordCount }} 个词
+                          </span>
                         </div>
                         <div class="justify-items-end">
                           <audio controls class="chapter">
@@ -502,10 +499,10 @@ function copyAllError() {
                       </div>
                     </td>
                   </tr>
-                  <template v-for="(wordGroup, i) of refVocabulary[category].words" :key="wordGroup.label">
+                  <template v-for="(wordGroup, i) of filteredWordGroups" :key="`${category}-${i}`">
                     <tr
                       v-for="item of wordGroup"
-                      v-show="((isTrainingModel && (isOnlyShowErrors ? item.spellError : true)) || !isTrainingModel) && matchesPriorityFilter(item)" :id="`tr_${item.id}`"
+                      v-show="(isTrainingModel && (isOnlyShowErrors ? item.spellError : true)) || !isTrainingModel" :id="`tr_${item.id}`"
                       :key="item.id"
                       :class="{ 'bg-gray-50 dark:bg-gray-700': item.id % 2 === 0, [`group-color-${i % 15}`]: true }" class="text-sm text-gray-900 dark:text-white"
                     >
@@ -589,6 +586,14 @@ function copyAllError() {
                       </td>
                     </tr>
                   </template>
+                  <tr v-if="isFilterActive && filteredWordCount === 0">
+                    <td
+                      colspan="8"
+                      class="px-4 py-8 text-center text-sm font-normal text-gray-500 dark:bg-gray-800 dark:text-gray-300"
+                    >
+                      没有找到匹配的单词
+                    </td>
+                  </tr>
                 </tbody>
               </table>
             </div>
