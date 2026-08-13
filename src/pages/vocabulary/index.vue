@@ -36,8 +36,10 @@ const isShowSource = ref(false)
 
 const trainingStats = ref('')
 const keyword = ref('')
+const ALL_CATEGORY = '__all__'
 const chapters = Object.keys(vocabulary)
-const category = ref(localStorage.getItem(CHAPTER_KEY) || chapters[0])
+const savedCategory = localStorage.getItem(CHAPTER_KEY)
+const category = ref(savedCategory === ALL_CATEGORY || chapters.includes(savedCategory) ? savedCategory : chapters[0])
 
 const priorityFilter = ref('all')
 const FREQUENCY_LABELS = { high: '高频', medium: '中频', low: '低频' }
@@ -118,18 +120,34 @@ function matchesPriorityFilter(item) {
 
 const refVocabulary = reactive(vocabulary)
 const searchKeyword = computed(() => keyword.value.trim().toLowerCase())
+const isAllCategories = computed(() => category.value === ALL_CATEGORY)
 const currentChapter = computed(() => refVocabulary[category.value])
+const allGroupCount = computed(() => Object.values(refVocabulary).reduce((total, chapter) => total + chapter.groupCount, 0))
+const allWordCount = computed(() => Object.values(refVocabulary).reduce((total, chapter) => total + chapter.wordCount, 0))
+const selectedGroupCount = computed(() => isAllCategories.value ? allGroupCount.value : currentChapter.value?.groupCount || 0)
+const selectedWordCount = computed(() => isAllCategories.value ? allWordCount.value : currentChapter.value?.wordCount || 0)
+const selectedCategoryLabel = computed(() => isAllCategories.value ? '全部分类' : getCategoryLabel(category.value))
 const isPriorityFilterActive = computed(() => hasImportanceSelection.value || priorityFilter.value !== 'all')
 const isFilterActive = computed(() => isPriorityFilterActive.value || !!searchKeyword.value)
 
 const extraOverrides = loadExtraOverrides()
-for (const cat of Object.values(refVocabulary)) {
+const wordCategoryMap = new Map()
+for (const [categoryKey, cat] of Object.entries(refVocabulary)) {
   for (const group of cat.words) {
     for (const item of group) {
+      wordCategoryMap.set(item.id, categoryKey)
       if (extraOverrides[item.id] !== undefined)
         item.extra = extraOverrides[item.id]
     }
   }
+}
+
+function getItemCategory(item) {
+  return wordCategoryMap.get(item.id) || category.value
+}
+
+function getWordAudioPath(item) {
+  return `vocabulary/audio/${getItemCategory(item)}/${item.word[0]}.mp3`
 }
 
 function isMatchedWord(item, keywordValue) {
@@ -149,18 +167,30 @@ function matchesWordFilters(item) {
 }
 
 const filteredWordGroups = computed(() => {
-  const chapter = currentChapter.value
-  if (!chapter)
+  const chapterEntries = isAllCategories.value
+    ? Object.entries(refVocabulary)
+    : [[category.value, currentChapter.value]]
+  if (!chapterEntries.length)
     return []
 
-  return chapter.words
-    .map(group => group.filter(item => matchesWordFilters(item)))
-    .filter(group => group.length > 0)
+  const groups = []
+  for (const [, chapter] of chapterEntries) {
+    if (!chapter)
+      continue
+    for (const group of chapter.words) {
+      const filteredGroup = group.filter(item => matchesWordFilters(item))
+      if (filteredGroup.length > 0)
+        groups.push(filteredGroup)
+    }
+  }
+  return groups
 })
 
 const filteredWordCount = computed(() => {
   return filteredWordGroups.value.reduce((total, group) => total + group.length, 0)
 })
+
+const currentCount = computed(() => isFilterActive.value ? filteredWordCount.value : selectedWordCount.value)
 
 const filteredIndexMap = computed(() => {
   const map = new Map()
@@ -185,17 +215,21 @@ function calcStats() {
   let missing = 0
   let correct = 0
   if (isTrainingModel.value) {
-    const cur = refVocabulary[category.value]
+    const chaptersToScan = isAllCategories.value ? Object.values(refVocabulary) : [refVocabulary[category.value]]
     // 遍历所有单词的属性
-    for (const group of cur.words) {
-      for (const item of group) {
-        if (item.spellValue) {
-          if (item.spellError)
-            error++
-          else
-            correct++
+    for (const cur of chaptersToScan) {
+      if (!cur)
+        continue
+      for (const group of cur.words) {
+        for (const item of group) {
+          if (item.spellValue) {
+            if (item.spellError)
+              error++
+            else
+              correct++
+          }
+          else { missing++ }
         }
-        else { missing++ }
       }
     }
   }
@@ -314,12 +348,16 @@ function getInputStyleClass(item) {
 }
 
 function copyAllError() {
-  const words = refVocabulary[category.value].words
+  const chaptersToScan = isAllCategories.value ? Object.values(refVocabulary) : [refVocabulary[category.value]]
   const errorWords = []
-  for (const group of words) {
-    for (const item of group) {
-      if (item.spellError)
-        errorWords.push(`${item.word} ${item.pos} ${item.meaning}`)
+  for (const cur of chaptersToScan) {
+    if (!cur)
+      continue
+    for (const group of cur.words) {
+      for (const item of group) {
+        if (item.spellError)
+          errorWords.push(`${item.word} ${item.pos} ${item.meaning}`)
+      }
     }
   }
   navigator.clipboard.writeText(errorWords.join('\n\n'))
@@ -345,7 +383,7 @@ function copyAllError() {
       <div class="grid grid-cols-3 gap-3 sm:min-w-120">
         <div class="rounded-lg border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-950">
           <div class="text-2xl font-black text-slate-950 dark:text-white">
-            {{ refVocabulary[category].groupCount }}
+            {{ selectedGroupCount }}
           </div>
           <div class="text-xs font-medium text-slate-500 dark:text-slate-400">
             词组
@@ -353,7 +391,7 @@ function copyAllError() {
         </div>
         <div class="rounded-lg border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-950">
           <div class="text-2xl font-black text-slate-950 dark:text-white">
-            {{ refVocabulary[category].wordCount }}
+            {{ selectedWordCount }}
           </div>
           <div class="text-xs font-medium text-slate-500 dark:text-slate-400">
             单词
@@ -361,7 +399,7 @@ function copyAllError() {
         </div>
         <div class="rounded-lg border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-950">
           <div class="text-2xl font-black text-slate-950 dark:text-white">
-            {{ isFilterActive ? filteredWordCount : refVocabulary[category].wordCount }}
+            {{ currentCount }}
           </div>
           <div class="text-xs font-medium text-slate-500 dark:text-slate-400">
             当前
@@ -376,6 +414,9 @@ function copyAllError() {
           v-model="category"
           class="h-11 rounded-lg border border-slate-200 bg-slate-50 px-3 text-sm font-medium text-slate-900 outline-none transition focus:border-slate-400 focus:bg-white focus:ring-2 focus:ring-slate-100 dark:border-slate-800 dark:bg-slate-900 dark:text-white dark:focus:border-slate-600 dark:focus:ring-slate-800"
         >
+          <option :value="ALL_CATEGORY">
+            全部分类
+          </option>
           <option v-for="(_, k) in refVocabulary" :key="k" :value="k">
             {{ getCategoryLabel(k) }}
           </option>
@@ -481,22 +522,25 @@ function copyAllError() {
         <div class="min-w-0">
           <div class="flex flex-wrap items-center gap-2">
             <h2 class="text-lg font-bold text-slate-950 dark:text-white">
-              {{ getCategoryLabel(category) }}
+              {{ selectedCategoryLabel }}
             </h2>
             <span class="rounded-md bg-white px-2 py-1 text-xs font-semibold text-slate-500 ring-1 ring-slate-200 dark:bg-slate-950 dark:text-slate-400 dark:ring-slate-800">
-              {{ refVocabulary[category].groupCount }} 组
+              {{ selectedGroupCount }} 组
             </span>
             <span class="rounded-md bg-white px-2 py-1 text-xs font-semibold text-slate-500 ring-1 ring-slate-200 dark:bg-slate-950 dark:text-slate-400 dark:ring-slate-800">
-              {{ refVocabulary[category].wordCount }} 个词
+              {{ selectedWordCount }} 个词
             </span>
             <span v-if="isFilterActive" class="rounded-md bg-slate-950 px-2 py-1 text-xs font-semibold text-white dark:bg-white dark:text-slate-950">
               匹配 {{ filteredWordCount }} 个
             </span>
           </div>
         </div>
-        <audio controls class="chapter w-full max-w-80">
+        <audio v-if="!isAllCategories" controls class="chapter w-full max-w-80">
           <source :src="`vocabulary/audio/${refVocabulary[category].audio}`" type="audio/mpeg">
         </audio>
+        <div v-else class="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-500 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-400">
+          全库模式下可播放单词音频
+        </div>
       </div>
 
       <div class="overflow-x-auto">
@@ -566,7 +610,7 @@ function copyAllError() {
                     type="button"
                     class="inline-grid h-9 w-9 place-items-center rounded-lg border border-slate-200 bg-white text-slate-600 transition hover:border-slate-300 hover:text-slate-950 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300 dark:hover:text-white"
                     title="播放单词"
-                    @click="play(`vocabulary/audio/${category}/${item.word[0]}.mp3`)"
+                    @click="play(getWordAudioPath(item))"
                   >
                     <i class="i-ph-speaker-simple-high-bold" />
                   </button>
@@ -586,7 +630,7 @@ function copyAllError() {
                       :class="getInputStyleClass(item)"
                       type="text"
                       @focusout="onInputFocusOut($event, item)"
-                      @focusin="onInputFocusIn($event, `vocabulary/audio/${category}/${item.word[0]}.mp3`)"
+                      @focusin="onInputFocusIn($event, getWordAudioPath(item))"
                       @keydown="onInputKeydown"
                     >
                   </template>
