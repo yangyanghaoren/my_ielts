@@ -5,6 +5,7 @@ import { getCategoryLabel } from './categoryLabels'
 
 const CHAPTER_KEY = 'vocabulary_chapter'
 const EXTRA_OVERRIDES_KEY = 'vocabulary_extra_overrides'
+const DEFAULT_SCOPE_KEY = 'vocabulary_default_scope_v2'
 
 function loadExtraOverrides() {
   try {
@@ -39,7 +40,14 @@ const keyword = ref('')
 const ALL_CATEGORY = '__all__'
 const chapters = Object.keys(vocabulary)
 const savedCategory = localStorage.getItem(CHAPTER_KEY)
-const category = ref(savedCategory === ALL_CATEGORY || chapters.includes(savedCategory) ? savedCategory : chapters[0])
+const hasDefaultScope = localStorage.getItem(DEFAULT_SCOPE_KEY) === '1'
+const initialCategory = !hasDefaultScope
+  ? ALL_CATEGORY
+  : savedCategory === ALL_CATEGORY || chapters.includes(savedCategory) ? savedCategory : ALL_CATEGORY
+const category = ref(initialCategory)
+localStorage.setItem(DEFAULT_SCOPE_KEY, '1')
+if (!hasDefaultScope)
+  localStorage.setItem(CHAPTER_KEY, ALL_CATEGORY)
 
 const priorityFilter = ref('all')
 const FREQUENCY_LABELS = { high: '高频', medium: '中频', low: '低频' }
@@ -126,7 +134,7 @@ const allGroupCount = computed(() => Object.values(refVocabulary).reduce((total,
 const allWordCount = computed(() => Object.values(refVocabulary).reduce((total, chapter) => total + chapter.wordCount, 0))
 const selectedGroupCount = computed(() => isAllCategories.value ? allGroupCount.value : currentChapter.value?.groupCount || 0)
 const selectedWordCount = computed(() => isAllCategories.value ? allWordCount.value : currentChapter.value?.wordCount || 0)
-const selectedCategoryLabel = computed(() => isAllCategories.value ? '全部分类' : getCategoryLabel(category.value))
+const selectedCategoryLabel = computed(() => isAllCategories.value ? '00 全部分类' : getCategoryLabel(category.value))
 const isPriorityFilterActive = computed(() => hasImportanceSelection.value || priorityFilter.value !== 'all')
 const isFilterActive = computed(() => isPriorityFilterActive.value || !!searchKeyword.value)
 
@@ -415,7 +423,7 @@ function copyAllError() {
           class="h-11 rounded-lg border border-slate-200 bg-slate-50 px-3 text-sm font-medium text-slate-900 outline-none transition focus:border-slate-400 focus:bg-white focus:ring-2 focus:ring-slate-100 dark:border-slate-800 dark:bg-slate-900 dark:text-white dark:focus:border-slate-600 dark:focus:ring-slate-800"
         >
           <option :value="ALL_CATEGORY">
-            全部分类
+            00 全部分类
           </option>
           <option v-for="(_, k) in refVocabulary" :key="k" :value="k">
             {{ getCategoryLabel(k) }}
