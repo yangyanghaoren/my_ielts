@@ -2,7 +2,7 @@
 
 滚瓜烂熟
 
-| 排名 | 考点词 | 词性 | 常考中文词义 | 雅思阅读真题命题方式 | 备注 |
+| 排名 | 考点词 | 词性 | 常考中文词义 | 考试英语阅读真题命题方式 | 备注 |
 |---|---|---|---|---|---|
 1|resemble|v.|像，与……相似|like,look,be similar to
 2|recognize|v.|认出，识别；承认|perceive,acknowledge,realize,appreciate, admit ,identify, comprehend, understand, know
@@ -20,17 +20,17 @@
 14|underlie |v.|成为……基础| based on, ground, root
 15|ignore| v.|忽视，不顾| neglect, overlook, underestimate
 16|fertiliser| n.|化肥，肥料| chemical, toxic, unnatural
-17|that*| pron.|那；那个| this, it, they, those, these, such |*指代是雅思阅读的重要考点
-18|and* |conj.|和，而且| or, as well as, both…and, not only…but also…, other than, in addition, besides, on the one hand…on the other hand…, neither…nor… |*并列结构是雅思阅读的重要考点
-19|rather than* || 而非，不是| but, yet, however, whereas, nonetheless, nevertheless, although, notwithstanding, though, instead| *转折结构是雅思阅读的重要考点
-20|thanks to* || 由于，幸亏| stem from, derive, owing to, due to, according to, because of, on account of, as a result of, leading to, because, since, for, in that, as, therefore, hence |*因果关系是雅思阅读重要考点
+17|that*| pron.|那；那个| this, it, they, those, these, such |*指代是考试英语阅读的重要考点
+18|and* |conj.|和，而且| or, as well as, both…and, not only…but also…, other than, in addition, besides, on the one hand…on the other hand…, neither…nor… |*并列结构是考试英语阅读的重要考点
+19|rather than* || 而非，不是| but, yet, however, whereas, nonetheless, nevertheless, although, notwithstanding, though, instead| *转折结构是考试英语阅读的重要考点
+20|thanks to* || 由于，幸亏| stem from, derive, owing to, due to, according to, because of, on account of, as a result of, leading to, because, since, for, in that, as, therefore, hence |*因果关系是考试英语阅读重要考点
 
 
 ## 第 2 类观点词
 
 熟记 10 遍以上
 
-| 排名 | 考点词 | 词性 | 常考中文词义 | 雅思阅读真题命题方式 | 备注 |
+| 排名 | 考点词 | 词性 | 常考中文词义 | 考试英语阅读真题命题方式 | 备注 |
 |---|---|---|---|---|---|
 21|diversity|n.|多样性，差异|variety, difference
 22|detect|v.|查明，发现|find, look for, seek, search
@@ -137,7 +137,7 @@
 
 熟记 5 遍以上
 
-| 排名 | 考点词 | 词性 | 常考中文词义 | 雅思阅读真题命题方式 | 备注 |
+| 排名 | 考点词 | 词性 | 常考中文词义 | 考试英语阅读真题命题方式 | 备注 |
 |---|---|---|---|---|---|
 x|accumulate|v.|积累，积聚|gather
 x|addictive|adj.|上瘾的|habit

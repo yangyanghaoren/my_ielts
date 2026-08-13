@@ -300,9 +300,9 @@ function onInputFocusOut(e, item) {
 
 function getInputStyleClass(item) {
   const cls = {
-    error: 'ml-4 bg-red-50 border border-red-500 text-red-900 placeholder-red-700 text-sm rounded-lg focus:ring-red-500 dark:bg-gray-700 focus:border-red-500 inline-block p-2.5 dark:text-red-500 dark:placeholder-red-500 dark:border-red-500',
-    normal: 'ml-4 inline-block border border-gray-300 rounded-lg bg-gray-50 p-2.5 text-sm text-gray-900 dark:border-gray-600 focus:border-blue-500 dark:bg-gray-700 dark:text-white focus:ring-blue-500 dark:focus:border-blue-500 dark:focus:ring-blue-500 dark:placeholder-gray-400',
-    success: 'ml-4 bg-green-50 border border-green-500 text-green-900 dark:text-green-400 placeholder-green-700 dark:placeholder-green-500 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 inline-block p-2.5 dark:bg-gray-700 dark:border-green-500',
+    error: 'ml-3 inline-block w-34 rounded-lg border border-red-300 bg-red-50 px-3 py-2 text-sm text-red-900 outline-none focus:border-red-500 focus:ring-2 focus:ring-red-100 dark:border-red-800 dark:bg-red-950/40 dark:text-red-200 dark:focus:ring-red-900/60',
+    normal: 'ml-3 inline-block w-34 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-100 dark:border-slate-700 dark:bg-slate-950 dark:text-white dark:focus:border-slate-500 dark:focus:ring-slate-800',
+    success: 'ml-3 inline-block w-34 rounded-lg border border-emerald-300 bg-emerald-50 px-3 py-2 text-sm text-emerald-900 outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100 dark:border-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-200 dark:focus:ring-emerald-900/60',
   }
   if (isFinishTraining.value) {
     if (item.spellError)
@@ -327,311 +327,355 @@ function copyAllError() {
 </script>
 
 <template>
-  <div class="px-4 pt-6 2xl:px-0">
-    <div class="border border-gray-200 rounded-lg bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800 sm:p-6">
-      <!-- Card header -->
-      <div class="items-center justify-between lg:flex">
-        <div class="mb-4 lg:mb-0">
-          <h3 class="mb-2 text-xl font-bold text-gray-900 dark:text-white">
-            主题词汇训练
-          </h3>
-          <span class="text-base font-normal text-gray-500 dark:text-gray-400">按学习场景整理常用词，支持搜索、筛选、听写和例句复习</span>
+  <div class="space-y-6 py-8">
+    <section class="grid gap-5 lg:grid-cols-[1fr_auto] lg:items-end">
+      <div>
+        <div class="mb-3 inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-sm font-semibold text-slate-600 shadow-sm dark:border-slate-800 dark:bg-slate-950 dark:text-slate-300">
+          <i class="i-carbon-chart-histogram" />
+          Vocabulary Workspace
         </div>
-        <div class="items-center sm:flex">
-          <div class="flex flex-wrap items-center gap-2">
-            <select
-              v-model="category"
-              class="block min-w-48 flex-1 border border-gray-300 rounded-lg bg-gray-50 p-2.5 text-sm text-gray-900 dark:border-gray-600 focus:border-blue-500 dark:bg-gray-700 dark:text-white focus:ring-blue-500 dark:focus:border-blue-500 dark:focus:ring-blue-500 dark:placeholder-gray-400"
+        <h1 class="text-3xl font-black text-slate-950 dark:text-white sm:text-4xl">
+          主题词汇训练
+        </h1>
+        <p class="mt-3 max-w-2xl text-sm leading-7 text-slate-600 dark:text-slate-300 sm:text-base">
+          按学习场景整理常用词，支持搜索、筛选、音频播放、听写和例句复习。
+        </p>
+      </div>
+
+      <div class="grid grid-cols-3 gap-3 sm:min-w-120">
+        <div class="rounded-lg border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-950">
+          <div class="text-2xl font-black text-slate-950 dark:text-white">
+            {{ refVocabulary[category].groupCount }}
+          </div>
+          <div class="text-xs font-medium text-slate-500 dark:text-slate-400">
+            词组
+          </div>
+        </div>
+        <div class="rounded-lg border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-950">
+          <div class="text-2xl font-black text-slate-950 dark:text-white">
+            {{ refVocabulary[category].wordCount }}
+          </div>
+          <div class="text-xs font-medium text-slate-500 dark:text-slate-400">
+            单词
+          </div>
+        </div>
+        <div class="rounded-lg border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-950">
+          <div class="text-2xl font-black text-slate-950 dark:text-white">
+            {{ isFilterActive ? filteredWordCount : refVocabulary[category].wordCount }}
+          </div>
+          <div class="text-xs font-medium text-slate-500 dark:text-slate-400">
+            当前
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-950 sm:p-5">
+      <div class="grid gap-3 xl:grid-cols-[minmax(12rem,16rem)_14rem_minmax(16rem,1fr)_auto] xl:items-start">
+        <select
+          v-model="category"
+          class="h-11 rounded-lg border border-slate-200 bg-slate-50 px-3 text-sm font-medium text-slate-900 outline-none transition focus:border-slate-400 focus:bg-white focus:ring-2 focus:ring-slate-100 dark:border-slate-800 dark:bg-slate-900 dark:text-white dark:focus:border-slate-600 dark:focus:ring-slate-800"
+        >
+          <option v-for="(_, k) in refVocabulary" :key="k" :value="k">
+            {{ getCategoryLabel(k) }}
+          </option>
+        </select>
+
+        <div ref="filterDropdownRef" class="relative">
+          <button
+            type="button"
+            class="h-11 w-full flex items-center justify-between rounded-lg border border-slate-200 bg-slate-50 px-3 text-left text-sm font-medium text-slate-900 outline-none transition hover:bg-white dark:border-slate-800 dark:bg-slate-900 dark:text-white dark:hover:bg-slate-800"
+            aria-haspopup="true"
+            :aria-expanded="isFilterOpen"
+            @click="isFilterOpen = !isFilterOpen"
+          >
+            <span class="truncate">{{ filterSummaryLabel }}</span>
+            <i class="i-ph-caret-down-bold ml-2 flex-shrink-0 text-slate-500" />
+          </button>
+          <div
+            v-show="isFilterOpen"
+            class="absolute z-10 mt-2 w-72 rounded-lg border border-slate-200 bg-white p-2 shadow-xl dark:border-slate-800 dark:bg-slate-950"
+          >
+            <div class="mb-1 px-2 text-xs font-semibold uppercase tracking-wide text-slate-400 dark:text-slate-500">
+              条件筛选
+            </div>
+            <button
+              v-for="opt in PRIORITY_OPTIONS"
+              :key="opt.value"
+              type="button"
+              class="block w-full rounded-md px-2 py-2 text-left text-sm text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-900"
+              :class="{ 'bg-slate-900 text-white hover:bg-slate-900 dark:bg-white dark:text-slate-950 dark:hover:bg-white': !hasImportanceSelection && priorityFilter === opt.value }"
+              @click="selectPriorityOption(opt.value)"
             >
-              <!-- <option value="">
-                全部章节
-              </option> -->
-              <option v-for="(_, k) in refVocabulary" :key="k" :value="k">
-                {{ getCategoryLabel(k) }}
-              </option>
-            </select>
-            <div ref="filterDropdownRef" class="relative">
-              <button
-                type="button"
-                class="w-56 flex items-center justify-between border border-gray-300 rounded-lg bg-gray-50 p-2.5 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
-                aria-haspopup="true" :aria-expanded="isFilterOpen"
-                @click="isFilterOpen = !isFilterOpen"
-              >
-                <span class="truncate">{{ filterSummaryLabel }}</span>
-                <i class="i-ph-caret-down-bold ml-2 flex-shrink-0" />
-              </button>
-              <div
-                v-show="isFilterOpen"
-                class="absolute z-10 mt-1 w-64 border border-gray-200 rounded-lg bg-white p-2 shadow-lg dark:border-gray-700 dark:bg-gray-800"
-              >
-                <div class="mb-1 px-2 text-xs font-semibold text-gray-400 dark:text-gray-500">
-                  按条件筛选
-                </div>
-                <button
-                  v-for="opt in PRIORITY_OPTIONS" :key="opt.value"
-                  type="button"
-                  class="block w-full rounded px-2 py-1.5 text-left text-sm hover:bg-gray-100 dark:hover:bg-gray-700"
-                  :class="{ 'bg-blue-50 text-blue-700 dark:bg-blue-900 dark:text-blue-300': !hasImportanceSelection && priorityFilter === opt.value }"
-                  @click="selectPriorityOption(opt.value)"
-                >
-                  {{ opt.label }}
-                </button>
-                <div class="my-2 border-t border-gray-200 dark:border-gray-700" />
-                <div class="mb-1 px-2 text-xs font-semibold text-gray-400 dark:text-gray-500">
-                  按重要度多选
-                </div>
-                <label
-                  v-for="n in [5, 4, 3, 2, 1]" :key="n"
-                  class="flex cursor-pointer items-center rounded px-2 py-1.5 text-sm hover:bg-gray-100 dark:hover:bg-gray-700"
-                >
-                  <input
-                    v-model="importanceChecks[n]" type="checkbox" class="mr-2"
-                    @change="onImportanceCheckboxChange"
-                  >
-                  重要度 = {{ n }}
-                </label>
-              </div>
+              {{ opt.label }}
+            </button>
+            <div class="my-2 border-t border-slate-200 dark:border-slate-800" />
+            <div class="mb-1 px-2 text-xs font-semibold uppercase tracking-wide text-slate-400 dark:text-slate-500">
+              重要度
             </div>
-            <div class="relative min-w-64 flex-1 sm:flex-none">
-              <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                <i class="i-ph-magnifying-glass-bold h-4 w-4 text-gray-500 dark:text-gray-400" />
-              </div>
+            <label
+              v-for="n in [5, 4, 3, 2, 1]"
+              :key="n"
+              class="flex cursor-pointer items-center rounded-md px-2 py-2 text-sm text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-900"
+            >
               <input
-                v-model="keyword"
-                type="search"
-                class="block w-full border border-gray-300 rounded-lg bg-gray-50 p-2.5 pl-10 pr-10 text-sm text-gray-900 dark:border-gray-600 focus:border-blue-500 dark:bg-gray-700 dark:text-white focus:ring-blue-500 dark:focus:border-blue-500 dark:focus:ring-blue-500 dark:placeholder-gray-400"
-                placeholder="搜索单词/词义/例句"
-                @keydown.stop
+                v-model="importanceChecks[n]"
+                type="checkbox"
+                class="mr-2"
+                @change="onImportanceCheckboxChange"
               >
-              <button
-                v-if="keyword"
-                type="button"
-                class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 dark:text-gray-500 hover:text-gray-700 dark:hover:text-gray-200"
-                title="清空搜索"
-                @click="keyword = ''"
-              >
-                <i class="i-ph-x-bold h-4 w-4" />
-              </button>
-            </div>
-            <label class="ml-2 inline-flex cursor-pointer items-center">
-              <input v-model="isTrainingModel" type="checkbox" class="peer sr-only">
-              <div
-                class="peer relative h-6 w-11 rounded-full bg-gray-200 after:absolute after:start-[2px] after:top-[2px] after:h-5 after:w-5 after:border after:border-gray-300 dark:border-gray-600 after:rounded-full after:bg-white dark:bg-gray-700 peer-checked:bg-blue-600 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 after:transition-all after:content-[''] peer-checked:after:translate-x-full peer-checked:after:border-white dark:peer-focus:ring-blue-800 rtl:peer-checked:after:-translate-x-full"
-              />
-              <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">练习模式</span>
-            </label>
-            <label v-if="isTrainingModel" class="ml-2 inline-flex cursor-pointer items-center">
-              <input v-model="isShowMeaning" type="checkbox" class="peer sr-only">
-              <div
-                class="peer relative h-6 w-11 rounded-full bg-gray-200 after:absolute after:start-[2px] after:top-[2px] after:h-5 after:w-5 after:border after:border-gray-300 dark:border-gray-600 after:rounded-full after:bg-white dark:bg-gray-700 peer-checked:bg-blue-600 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 after:transition-all after:content-[''] peer-checked:after:translate-x-full peer-checked:after:border-white dark:peer-focus:ring-blue-800 rtl:peer-checked:after:-translate-x-full"
-              />
-              <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">释义</span>
-            </label>
-            <label v-if="isTrainingModel" class="ml-2 inline-flex cursor-pointer items-center">
-              <input v-model="isShowSource" type="checkbox" class="peer sr-only">
-              <div
-                class="peer relative h-6 w-11 rounded-full bg-gray-200 after:absolute after:start-[2px] after:top-[2px] after:h-5 after:w-5 after:border after:border-gray-300 dark:border-gray-600 after:rounded-full after:bg-white dark:bg-gray-700 peer-checked:bg-blue-600 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 after:transition-all after:content-[''] peer-checked:after:translate-x-full peer-checked:after:border-white dark:peer-focus:ring-blue-800 rtl:peer-checked:after:-translate-x-full"
-              />
-              <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">原词</span>
-            </label>
-            <label v-if="isTrainingModel" class="ml-2 inline-flex cursor-pointer items-center">
-              <input v-model="isAutoPlayWordAudio" type="checkbox" class="peer sr-only">
-              <div
-                class="peer relative h-6 w-11 rounded-full bg-gray-200 after:absolute after:start-[2px] after:top-[2px] after:h-5 after:w-5 after:border after:border-gray-300 dark:border-gray-600 after:rounded-full after:bg-white dark:bg-gray-700 peer-checked:bg-blue-600 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 after:transition-all after:content-[''] peer-checked:after:translate-x-full peer-checked:after:border-white dark:peer-focus:ring-blue-800 rtl:peer-checked:after:-translate-x-full"
-              />
-              <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">自动播放</span>
+              重要度 = {{ n }}
             </label>
           </div>
         </div>
+
+        <div class="relative">
+          <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+            <i class="i-ph-magnifying-glass-bold h-4 w-4 text-slate-500 dark:text-slate-400" />
+          </div>
+          <input
+            v-model="keyword"
+            type="search"
+            class="h-11 w-full rounded-lg border border-slate-200 bg-slate-50 px-3 pl-10 pr-10 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-slate-400 focus:bg-white focus:ring-2 focus:ring-slate-100 dark:border-slate-800 dark:bg-slate-900 dark:text-white dark:placeholder:text-slate-500 dark:focus:border-slate-600 dark:focus:ring-slate-800"
+            placeholder="搜索单词、词义、例句或拓展"
+            @keydown.stop
+          >
+          <button
+            v-if="keyword"
+            type="button"
+            class="absolute inset-y-0 right-0 flex items-center pr-3 text-slate-400 hover:text-slate-700 dark:text-slate-500 dark:hover:text-slate-200"
+            title="清空搜索"
+            @click="keyword = ''"
+          >
+            <i class="i-ph-x-bold h-4 w-4" />
+          </button>
+        </div>
+
+        <div class="flex flex-wrap gap-2">
+          <label class="inline-flex h-11 cursor-pointer items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 text-sm font-medium text-slate-700 shadow-sm dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200">
+            <input v-model="isTrainingModel" type="checkbox" class="peer sr-only">
+            <span class="relative h-5 w-9 rounded-full bg-slate-200 transition after:absolute after:left-0.5 after:top-0.5 after:h-4 after:w-4 after:rounded-full after:bg-white after:shadow after:transition peer-checked:bg-slate-950 peer-checked:after:translate-x-4 dark:bg-slate-700 dark:peer-checked:bg-white dark:peer-checked:after:bg-slate-950" />
+            练习
+          </label>
+          <label v-if="isTrainingModel" class="inline-flex h-11 cursor-pointer items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 text-sm font-medium text-slate-700 shadow-sm dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200">
+            <input v-model="isShowMeaning" type="checkbox" class="peer sr-only">
+            <span class="relative h-5 w-9 rounded-full bg-slate-200 transition after:absolute after:left-0.5 after:top-0.5 after:h-4 after:w-4 after:rounded-full after:bg-white after:shadow after:transition peer-checked:bg-slate-950 peer-checked:after:translate-x-4 dark:bg-slate-700 dark:peer-checked:bg-white dark:peer-checked:after:bg-slate-950" />
+            释义
+          </label>
+          <label v-if="isTrainingModel" class="inline-flex h-11 cursor-pointer items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 text-sm font-medium text-slate-700 shadow-sm dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200">
+            <input v-model="isShowSource" type="checkbox" class="peer sr-only">
+            <span class="relative h-5 w-9 rounded-full bg-slate-200 transition after:absolute after:left-0.5 after:top-0.5 after:h-4 after:w-4 after:rounded-full after:bg-white after:shadow after:transition peer-checked:bg-slate-950 peer-checked:after:translate-x-4 dark:bg-slate-700 dark:peer-checked:bg-white dark:peer-checked:after:bg-slate-950" />
+            原词
+          </label>
+          <label v-if="isTrainingModel" class="inline-flex h-11 cursor-pointer items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 text-sm font-medium text-slate-700 shadow-sm dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200">
+            <input v-model="isAutoPlayWordAudio" type="checkbox" class="peer sr-only">
+            <span class="relative h-5 w-9 rounded-full bg-slate-200 transition after:absolute after:left-0.5 after:top-0.5 after:h-4 after:w-4 after:rounded-full after:bg-white after:shadow after:transition peer-checked:bg-slate-950 peer-checked:after:translate-x-4 dark:bg-slate-700 dark:peer-checked:bg-white dark:peer-checked:after:bg-slate-950" />
+            自动播放
+          </label>
+        </div>
       </div>
-      <!-- Table -->
-      <div class="mt-6 flex flex-col">
-        <div class="overflow-x-auto rounded-lg">
-          <div class="inline-block min-w-full align-middle">
-            <div class="overflow-hidden shadow sm:rounded-lg">
-              <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-600">
-                <thead class="bg-gray-50 dark:bg-gray-700">
-                  <tr>
-                    <th class="p-4 text-left text-xs font-medium tracking-wider text-gray-500 dark:text-white">
-                      #
-                    </th>
-                    <th class="p-4 text-left text-xs font-medium tracking-wider text-gray-500 dark:text-white">
-                      标签
-                    </th>
-                    <th class="p-4 text-xs font-medium tracking-wider text-gray-500 dark:text-white">
-                      <br>
-                    </th>
-                    <th class="p-4 text-left text-xs font-medium tracking-wider text-gray-500 dark:text-white">
-                      词
-                    </th>
-                    <th class="w-0 text-left text-xs font-medium text-gray-500 dark:text-white">
-                      词性
-                    </th>
-                    <th class="p-4 text-left text-xs font-medium tracking-wider text-gray-500 dark:text-white">
-                      词义
-                    </th>
-                    <th class="p-4 text-left text-xs font-medium tracking-wider text-gray-500 dark:text-white">
-                      例句
-                    </th>
-                    <th class="p-4 text-left text-xs font-medium tracking-wider text-gray-500 dark:text-white">
-                      拓展
-                    </th>
-                  </tr>
-                </thead>
-                <tbody class="bg-white dark:bg-gray-800">
-                  <tr class="bg-hex-f3f3f3">
-                    <td
-                      colspan="8"
-                      class="px-4 py-6 text-sm font-normal text-gray-900 dark:bg-gray-500 dark:text-white"
-                    >
-                      <div class="flex flex-row">
-                        <div class="flex flex-1 items-center">
-                          <span class="text-lg">{{ getCategoryLabel(category) }}</span>
-                          （ {{ refVocabulary[category].groupCount }} 组 {{ refVocabulary[category].wordCount }} 个词 ）
-                          <span v-if="isFilterActive" class="ml-2 text-gray-500 dark:text-gray-200">
-                            已筛选/匹配 {{ filteredWordCount }} 个词
-                          </span>
-                        </div>
-                        <div class="justify-items-end">
-                          <audio controls class="chapter">
-                            <source :src="`vocabulary/audio/${refVocabulary[category].audio}`" type="audio/mpeg">
-                          </audio>
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                  <template v-for="(wordGroup, i) of filteredWordGroups" :key="`${category}-${i}`">
-                    <tr
-                      v-for="item of wordGroup"
-                      v-show="(isTrainingModel && (isOnlyShowErrors ? item.spellError : true)) || !isTrainingModel" :id="`tr_${item.id}`"
-                      :key="item.id"
-                      :class="{ 'bg-gray-50 dark:bg-gray-700': item.id % 2 === 0, [`group-color-${i % 15}`]: true }" class="text-sm text-gray-900 dark:text-white"
-                    >
-                      <td class="p-4">
-                        {{ isFilterActive ? filteredIndexMap.get(item.id) : item.id }}
-                      </td>
-                      <td v-if="item.frequency" class="whitespace-nowrap p-4">
-                        <div class="flex flex-col items-start gap-1">
-                          <span
-                            class="inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium"
-                            :class="FREQUENCY_CLASSES[item.frequency]"
-                            :title="`出现频率：${FREQUENCY_LABELS[item.frequency]}`"
-                          >{{ FREQUENCY_LABELS[item.frequency] }}</span>
-                          <span
-                            class="inline-flex items-center rounded-full bg-orange-100 px-2 py-0.5 text-xs font-medium text-orange-800 dark:bg-orange-900 dark:text-orange-300"
-                            :title="`重要度：${item.importance}/5${item.reason ? ` · ${item.reason}` : ''}`"
-                          >★{{ item.importance }}</span>
-                          <span
-                            class="inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium"
-                            :class="MASTERY_CLASSES[item.mastery]"
-                            :title="item.mastery === 'productive' ? '需要能够主动写出/说出' : '只需要能够识别、理解'"
-                          >{{ MASTERY_LABELS[item.mastery] }}</span>
-                        </div>
-                      </td>
-                      <td v-else class="p-4" />
-                      <td>
-                        <i
-                          class="i-ph-speaker-simple-high-bold inline-block cursor-pointer"
-                          @click="play(`vocabulary/audio/${category}/${item.word[0]}.mp3`)"
-                        />
+    </section>
 
-                        <template v-if="isTrainingModel">
-                          <i
-                            :class="`${item.showSource ? 'i-ph-eye-slash-bold' : 'i-ph-eye-bold'} inline-block cursor-pointer ml-4`"
-                            title="显示原词" @click="item.showSource = !item.showSource"
-                          />
-                          <input
-                            :id="item.id" autocomplete="off" :class="getInputStyleClass(item)"
-                            type="text"
-                            @focusout="onInputFocusOut($event, item)"
-                            @focusin="onInputFocusIn($event, `vocabulary/audio/${category}/${item.word[0]}.mp3`)"
-                            @keydown="onInputKeydown"
-                          >
-                        </template>
-                      </td>
-                      <td class="group relative whitespace-nowrap p-4">
-                        <div v-if="!isTrainingModel || item.showSource || (isTrainingModel && isOnlyShowErrors && item.spellError) || isShowSource">
-                          <p v-for="w in item.word" :key="w">
-                            <a
-                              class="hover:underline" :title="`在剑桥词典中查询 ${w}`" target="_blank"
-                              :href="`https://dictionary.cambridge.org/dictionary/english-chinese-simplified/${w}`"
-                            >{{ w }}</a>
-                          </p>
+    <section class="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-950">
+      <div class="flex flex-col gap-4 border-b border-slate-200 bg-slate-50 p-4 dark:border-slate-800 dark:bg-slate-900/60 lg:flex-row lg:items-center lg:justify-between">
+        <div class="min-w-0">
+          <div class="flex flex-wrap items-center gap-2">
+            <h2 class="text-lg font-bold text-slate-950 dark:text-white">
+              {{ getCategoryLabel(category) }}
+            </h2>
+            <span class="rounded-md bg-white px-2 py-1 text-xs font-semibold text-slate-500 ring-1 ring-slate-200 dark:bg-slate-950 dark:text-slate-400 dark:ring-slate-800">
+              {{ refVocabulary[category].groupCount }} 组
+            </span>
+            <span class="rounded-md bg-white px-2 py-1 text-xs font-semibold text-slate-500 ring-1 ring-slate-200 dark:bg-slate-950 dark:text-slate-400 dark:ring-slate-800">
+              {{ refVocabulary[category].wordCount }} 个词
+            </span>
+            <span v-if="isFilterActive" class="rounded-md bg-slate-950 px-2 py-1 text-xs font-semibold text-white dark:bg-white dark:text-slate-950">
+              匹配 {{ filteredWordCount }} 个
+            </span>
+          </div>
+        </div>
+        <audio controls class="chapter w-full max-w-80">
+          <source :src="`vocabulary/audio/${refVocabulary[category].audio}`" type="audio/mpeg">
+        </audio>
+      </div>
 
-                          <div
-                            class="absolute right-0 top-0 hidden h-100% items-center group-hover:flex"
-                            @click="copyText(item)"
-                          >
-                            <i class="i-ph-copy block cursor-pointer px-4" />
-                          </div>
-                        </div>
-                      </td>
-                      <td style="font-style: italic; font-family: times;">
-                        {{ item.pos }}
-                      </td>
-                      <td class="p-4">
-                        {{ isShowMeaning ? item.meaning : '' }}
-                      </td>
-                      <td class="p-4">
-                        {{ isTrainingModel ? '' : item.example }}
-                      </td>
-                      <td class="p-4">
-                        <div
-                          v-if="!isTrainingModel"
-                          class="min-w-20 rounded p-1 outline-none focus:bg-white hover:bg-gray-50 focus:ring-1 focus:ring-blue-500 dark:focus:bg-gray-700 dark:hover:bg-gray-700"
-                          contenteditable="true"
-                          @blur="onExtraBlur($event, item)"
-                        >
-                          {{ item.extra }}
-                        </div>
-                      </td>
-                    </tr>
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-slate-200 dark:divide-slate-800">
+          <thead class="bg-white dark:bg-slate-950">
+            <tr>
+              <th class="w-16 px-4 py-3 text-left text-xs font-bold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+                #
+              </th>
+              <th class="px-4 py-3 text-left text-xs font-bold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+                标签
+              </th>
+              <th class="w-42 px-4 py-3 text-left text-xs font-bold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+                操作
+              </th>
+              <th class="px-4 py-3 text-left text-xs font-bold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+                词
+              </th>
+              <th class="px-4 py-3 text-left text-xs font-bold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+                词性
+              </th>
+              <th class="px-4 py-3 text-left text-xs font-bold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+                词义
+              </th>
+              <th class="px-4 py-3 text-left text-xs font-bold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+                例句
+              </th>
+              <th class="px-4 py-3 text-left text-xs font-bold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+                拓展
+              </th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-100 bg-white dark:divide-slate-800 dark:bg-slate-950">
+            <template v-for="(wordGroup, i) of filteredWordGroups" :key="`${category}-${i}`">
+              <tr
+                v-for="item of wordGroup"
+                v-show="(isTrainingModel && (isOnlyShowErrors ? item.spellError : true)) || !isTrainingModel"
+                :id="`tr_${item.id}`"
+                :key="item.id"
+                :class="[`group-color-${i % 15}`]"
+                class="text-sm text-slate-800 transition hover:bg-slate-50 dark:text-slate-100 dark:hover:bg-slate-900/70"
+              >
+                <td class="px-4 py-4 font-mono text-xs text-slate-500 dark:text-slate-400">
+                  {{ isFilterActive ? filteredIndexMap.get(item.id) : item.id }}
+                </td>
+                <td v-if="item.frequency" class="whitespace-nowrap px-4 py-4">
+                  <div class="flex flex-col items-start gap-1.5">
+                    <span
+                      class="inline-flex items-center rounded-md px-2 py-0.5 text-xs font-semibold"
+                      :class="FREQUENCY_CLASSES[item.frequency]"
+                      :title="`出现频率：${FREQUENCY_LABELS[item.frequency]}`"
+                    >{{ FREQUENCY_LABELS[item.frequency] }}</span>
+                    <span
+                      class="inline-flex items-center rounded-md bg-amber-100 px-2 py-0.5 text-xs font-semibold text-amber-800 dark:bg-amber-950 dark:text-amber-200"
+                      :title="`重要度：${item.importance}/5${item.reason ? ` · ${item.reason}` : ''}`"
+                    >★{{ item.importance }}</span>
+                    <span
+                      class="inline-flex items-center rounded-md px-2 py-0.5 text-xs font-semibold"
+                      :class="MASTERY_CLASSES[item.mastery]"
+                      :title="item.mastery === 'productive' ? '需要能够主动写出/说出' : '只需要能够识别、理解'"
+                    >{{ MASTERY_LABELS[item.mastery] }}</span>
+                  </div>
+                </td>
+                <td v-else class="px-4 py-4" />
+                <td class="whitespace-nowrap px-4 py-4">
+                  <button
+                    type="button"
+                    class="inline-grid h-9 w-9 place-items-center rounded-lg border border-slate-200 bg-white text-slate-600 transition hover:border-slate-300 hover:text-slate-950 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300 dark:hover:text-white"
+                    title="播放单词"
+                    @click="play(`vocabulary/audio/${category}/${item.word[0]}.mp3`)"
+                  >
+                    <i class="i-ph-speaker-simple-high-bold" />
+                  </button>
+
+                  <template v-if="isTrainingModel">
+                    <button
+                      type="button"
+                      class="ml-2 inline-grid h-9 w-9 place-items-center rounded-lg border border-slate-200 bg-white text-slate-600 transition hover:border-slate-300 hover:text-slate-950 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300 dark:hover:text-white"
+                      title="显示原词"
+                      @click="item.showSource = !item.showSource"
+                    >
+                      <i :class="item.showSource ? 'i-ph-eye-slash-bold' : 'i-ph-eye-bold'" />
+                    </button>
+                    <input
+                      :id="item.id"
+                      autocomplete="off"
+                      :class="getInputStyleClass(item)"
+                      type="text"
+                      @focusout="onInputFocusOut($event, item)"
+                      @focusin="onInputFocusIn($event, `vocabulary/audio/${category}/${item.word[0]}.mp3`)"
+                      @keydown="onInputKeydown"
+                    >
                   </template>
-                  <tr v-if="isFilterActive && filteredWordCount === 0">
-                    <td
-                      colspan="8"
-                      class="px-4 py-8 text-center text-sm font-normal text-gray-500 dark:bg-gray-800 dark:text-gray-300"
+                </td>
+                <td class="group relative whitespace-nowrap px-4 py-4 font-semibold text-slate-950 dark:text-white">
+                  <div v-if="!isTrainingModel || item.showSource || (isTrainingModel && isOnlyShowErrors && item.spellError) || isShowSource">
+                    <p v-for="w in item.word" :key="w">
+                      <a
+                        class="decoration-slate-300 underline-offset-4 hover:underline dark:decoration-slate-600"
+                        :title="`在剑桥词典中查询 ${w}`"
+                        target="_blank"
+                        :href="`https://dictionary.cambridge.org/dictionary/english-chinese-simplified/${w}`"
+                      >{{ w }}</a>
+                    </p>
+
+                    <button
+                      type="button"
+                      class="absolute right-1 top-1 hidden h-8 w-8 place-items-center rounded-md text-slate-400 hover:bg-slate-100 hover:text-slate-900 group-hover:grid dark:hover:bg-slate-800 dark:hover:text-white"
+                      title="复制词条"
+                      @click="copyText(item)"
                     >
-                      没有找到匹配的单词
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
+                      <i class="i-ph-copy" />
+                    </button>
+                  </div>
+                </td>
+                <td class="whitespace-nowrap px-4 py-4 font-serif italic text-slate-500 dark:text-slate-400">
+                  {{ item.pos }}
+                </td>
+                <td class="min-w-56 px-4 py-4 text-slate-700 dark:text-slate-200">
+                  {{ isShowMeaning ? item.meaning : '' }}
+                </td>
+                <td class="min-w-90 px-4 py-4 text-slate-600 dark:text-slate-300">
+                  {{ isTrainingModel ? '' : item.example }}
+                </td>
+                <td class="min-w-64 px-4 py-4">
+                  <div
+                    v-if="!isTrainingModel"
+                    class="min-h-9 rounded-lg border border-transparent px-3 py-2 text-slate-600 outline-none transition hover:border-slate-200 hover:bg-slate-50 focus:border-slate-300 focus:bg-white focus:ring-2 focus:ring-slate-100 dark:text-slate-300 dark:hover:border-slate-800 dark:hover:bg-slate-900 dark:focus:border-slate-700 dark:focus:bg-slate-950 dark:focus:ring-slate-800"
+                    contenteditable="true"
+                    @blur="onExtraBlur($event, item)"
+                  >
+                    {{ item.extra }}
+                  </div>
+                </td>
+              </tr>
+            </template>
+            <tr v-if="isFilterActive && filteredWordCount === 0">
+              <td
+                colspan="8"
+                class="px-4 py-12 text-center text-sm font-medium text-slate-500 dark:text-slate-300"
+              >
+                没有找到匹配的单词
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
-      <!-- Card Footer -->
-      <div class="flex items-center justify-between pt-3 sm:pt-6">
-        <div>
-          <p v-if="isTrainingModel">
-            {{ trainingStats }}
-          </p>
-        </div>
-        <div v-if="isTrainingModel" class="flex-shrink-0">
-          <button
-            type="button"
-            class="rounded-lg bg-blue-700 px-5 py-2.5 text-sm font-medium text-white dark:bg-blue-600 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-            @click="isFinishTraining = true"
-          >
-            完成练习
-          </button>
-          <button
-            type="button"
-            class="ml-2 rounded-lg bg-blue-700 px-5 py-2.5 text-sm font-medium text-white dark:bg-blue-600 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-            @click="isOnlyShowErrors = !isOnlyShowErrors"
-          >
-            {{ isOnlyShowErrors ? '展示所有' : '仅展示错词' }}
-          </button>
-          <button
-            type="button"
-            class="ml-2 rounded-lg bg-blue-700 px-5 py-2.5 text-sm font-medium text-white dark:bg-blue-600 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-            @click="copyAllError"
-          >
-            拷贝错词
-          </button>
-        </div>
+    </section>
+
+    <section v-if="isTrainingModel" class="flex flex-col gap-3 rounded-xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-950 sm:flex-row sm:items-center sm:justify-between">
+      <p class="text-sm font-medium text-slate-600 dark:text-slate-300">
+        {{ trainingStats || '完成后会在这里显示练习统计' }}
+      </p>
+      <div class="flex flex-wrap gap-2">
+        <button
+          type="button"
+          class="inline-flex items-center gap-2 rounded-lg bg-slate-950 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-slate-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200"
+          @click="isFinishTraining = true"
+        >
+          <i class="i-carbon-checkmark" />
+          完成练习
+        </button>
+        <button
+          type="button"
+          class="inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 transition hover:border-slate-300 hover:text-slate-950 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200 dark:hover:text-white"
+          @click="isOnlyShowErrors = !isOnlyShowErrors"
+        >
+          <i class="i-carbon-filter" />
+          {{ isOnlyShowErrors ? '展示所有' : '仅展示错词' }}
+        </button>
+        <button
+          type="button"
+          class="inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 transition hover:border-slate-300 hover:text-slate-950 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200 dark:hover:text-white"
+          @click="copyAllError"
+        >
+          <i class="i-ph-copy" />
+          拷贝错词
+        </button>
       </div>
-    </div>
+    </section>
   </div>
 </template>

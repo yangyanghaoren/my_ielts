@@ -21,23 +21,23 @@ const scoreTable = [
 </script>
 
 <template>
-  <div class="px-4 pt-6 text-gray-500 2xl:px-0 dark:text-gray-400">
-    <h3 class="mb-4 text-xl font-semibold text-black dark:text-white">
+  <div class="pt-6 text-slate-600 dark:text-slate-300">
+    <h3 class="mb-4 text-xl font-bold text-slate-950 dark:text-white">
       概述
     </h3>
     <div class="mb-4">
-      <p>了解雅思听力，以及考试中的一些基本原则、技巧</p>
+      <p>了解考试英语听力的基本原则、题型和做题节奏。</p>
       <br>
       <p>评分表</p>
-      <table class="w-full text-center text-sm text-gray-500 dark:text-gray-400">
+      <table class="w-full text-center text-sm text-slate-500 dark:text-slate-400">
         <tbody>
-          <tr class="border bg-white dark:border-gray-700 dark:bg-gray-800">
-            <td v-for="v in scoreTable" :key="v[0]" class="border px-6 py-4">
+          <tr class="border border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-950">
+            <td v-for="v in scoreTable" :key="v[0]" class="border border-slate-200 px-6 py-4 dark:border-slate-800">
               {{ v[0] }}
             </td>
           </tr>
-          <tr class="border bg-white dark:border-gray-700 dark:bg-gray-800">
-            <td v-for="v in scoreTable" :key="v[0]" class="border px-6 py-4">
+          <tr class="border border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-950">
+            <td v-for="v in scoreTable" :key="v[0]" class="border border-slate-200 px-6 py-4 dark:border-slate-800">
               {{ v[1] }}
             </td>
           </tr>
@@ -63,7 +63,7 @@ const scoreTable = [
         <li>只能听一次！！！</li>
       </ul>
     </div>
-    <h3 class="my-4 text-xl font-semibold text-black dark:text-white">
+    <h3 class="my-4 text-xl font-bold text-slate-950 dark:text-white">
       Section 1
     </h3>
     <ul class="mb-4 ml-6 list-disc">
@@ -97,7 +97,7 @@ const scoreTable = [
       <li>Don't check back, read ahead 不要向后看！不要向后看！不要向后看！错过了就错过了</li>
     </ul>
 
-    <h3 class="my-4 text-xl font-semibold text-black dark:text-white">
+    <h3 class="my-4 text-xl font-bold text-slate-950 dark:text-white">
       Section 2
     </h3>
     <ul class="ml-6 list-disc">
@@ -116,7 +116,7 @@ const scoreTable = [
       <li>Still quite easy, aim for a high score 难度低，依然需要争取拿高分</li>
     </ul>
 
-    <h3 class="my-4 text-xl font-semibold text-black dark:text-white">
+    <h3 class="my-4 text-xl font-bold text-slate-950 dark:text-white">
       Section 3
     </h3>
 
@@ -130,7 +130,7 @@ const scoreTable = [
       <li>高难度小节，目标应该是 6-7 个答对</li>
     </ul>
 
-    <h3 class="my-4 text-xl font-semibold text-black dark:text-white">
+    <h3 class="my-4 text-xl font-bold text-slate-950 dark:text-white">
       Section 4
     </h3>
     <ul class="ml-6 list-disc">
@@ -144,7 +144,7 @@ const scoreTable = [
       <li>Difficult: faster speech, more content, extra information 很难：说的很快、内容多、很多额外信息。比如：30s 的语音中可能没有给任何答案</li>
     </ul>
 
-    <h3 class="my-4 text-xl font-semibold text-black dark:text-white">
+    <h3 class="my-4 text-xl font-bold text-slate-950 dark:text-white">
       总结
     </h3>
     <p>Do some real practice tests 模拟考试练习</p>

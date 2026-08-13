@@ -3,94 +3,67 @@ import sentences from './100sentences'
 </script>
 
 <template>
-  <div class="px-4 pt-6 2xl:px-0">
-    <div
-      class="mb-4 border border-gray-200 rounded-lg bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800 sm:p-6">
-      <ul
-        class="mb-4 text-sm font-medium text-center text-gray-500 rounded-lg shadow sm:flex dark:divide-gray-700 dark:text-gray-400">
-        <li class="w-full">
-          <a href="/#/writing"
-            class="inline-block w-full p-4 text-gray-900 bg-gray-100 border-r border-gray-200 dark:border-gray-700 rounded-s-lg focus:ring-4 focus:ring-blue-300 active focus:outline-none dark:bg-gray-700 dark:text-white"
-            aria-current="page">100 句翻译练习</a>
-        </li>
-        <li class="w-full">
-          <a href="/#/writing"
-            class="inline-block w-full p-4 bg-white border-r border-gray-200 dark:border-gray-700 hover:text-gray-700 hover:bg-gray-50 focus:ring-4 focus:ring-blue-300 focus:outline-none dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700">[WIP]雅思大作文</a>
-        </li>
-        <li class="w-full">
-          <a href="/#/writing"
-            class="inline-block w-full p-4 bg-white border-r border-gray-200 dark:border-gray-700 hover:text-gray-700 hover:bg-gray-50 focus:ring-4 focus:ring-blue-300 focus:outline-none dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700">[WIP]雅思小作文</a>
-        </li>
-      </ul>
+  <div class="space-y-5 py-8">
+    <section class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-950 sm:p-6">
+      <div class="mb-5">
+        <h1 class="text-2xl font-black text-slate-950 dark:text-white">
+          写作训练
+        </h1>
+        <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">
+          从句子翻译开始，把表达准确度和结构感练稳。
+        </p>
+      </div>
 
-      <div class="items-center justify-between lg:flex ">
-        <div class="mb-4 lg:mb-0">
-          <h3 class="mb-2 text-xl font-bold text-gray-900 dark:text-white">
-            100 句翻译练习
-          </h3>
-          <span class="text-base font-normal text-gray-500 dark:text-gray-400">能够写出 error-free 的句子</span>
-        </div>
+      <nav class="mb-6 grid gap-2 rounded-lg border border-slate-200 bg-slate-50 p-1 text-sm font-semibold dark:border-slate-800 dark:bg-slate-900 sm:grid-cols-3">
+        <a href="/#/writing" class="rounded-md bg-white px-4 py-3 text-center text-slate-950 shadow-sm dark:bg-slate-800 dark:text-white">100 句翻译练习</a>
+        <a href="/#/writing" class="rounded-md px-4 py-3 text-center text-slate-600 transition hover:bg-white hover:text-slate-950 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white">[WIP] 议论文训练</a>
+        <a href="/#/writing" class="rounded-md px-4 py-3 text-center text-slate-600 transition hover:bg-white hover:text-slate-950 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white">[WIP] 图表写作</a>
+      </nav>
+
+      <div class="overflow-hidden rounded-xl border border-slate-200 dark:border-slate-800">
+        <table class="min-w-full divide-y divide-slate-200 dark:divide-slate-800">
+          <tbody class="divide-y divide-slate-100 bg-white dark:divide-slate-800 dark:bg-slate-950">
+            <template v-for="item of sentences" :key="item.no">
+              <template v-if="item.no == null">
+                <tr class="bg-slate-50 dark:bg-slate-900">
+                  <td colspan="5" class="px-4 py-4 text-lg font-bold text-slate-950 dark:text-white">
+                    {{ item.title }}
+                  </td>
+                </tr>
+              </template>
+              <template v-else>
+                <tr class="align-top text-sm text-slate-700 dark:text-slate-200">
+                  <td class="w-16 border-r border-slate-100 px-4 py-4 font-mono text-xs text-slate-500 dark:border-slate-800 dark:text-slate-400" rowspan="2">
+                    {{ item.no }}
+                  </td>
+                  <td class="min-w-80 border-r border-slate-100 px-4 py-4 font-medium text-slate-950 dark:border-slate-800 dark:text-white" rowspan="2">
+                    {{ item.sentence }}
+                  </td>
+                  <td class="border-b border-slate-100 px-4 py-4 dark:border-slate-800">
+                    <div class="mb-2 inline-flex items-center gap-2 rounded-md bg-slate-100 px-2 py-1 text-xs font-semibold text-slate-500 dark:bg-slate-900 dark:text-slate-400">
+                      <i class="i-carbon-book" />
+                      参考译文
+                    </div>
+                    <div>{{ item.translationFromBook }}</div>
+                  </td>
+                  <td class="w-30% border-l border-slate-100 px-4 py-4 whitespace-pre-line text-slate-500 dark:border-slate-800 dark:text-slate-400" rowspan="2">
+                    {{ item.remark }}
+                  </td>
+                </tr>
+                <tr class="align-top text-sm text-slate-700 dark:text-slate-200">
+                  <td class="px-4 py-4">
+                    <div class="mb-2 inline-flex items-center gap-2 rounded-md bg-slate-100 px-2 py-1 text-xs font-semibold text-slate-500 dark:bg-slate-900 dark:text-slate-400">
+                      <i class="i-carbon-chat" />
+                      改写参考
+                    </div>
+                    <div>{{ item.chatgpt }}</div>
+                  </td>
+                </tr>
+              </template>
+            </template>
+          </tbody>
+        </table>
       </div>
-      <!-- Table -->
-      <div class="mt-6 flex flex-col">
-        <div class="overflow-x-auto rounded-lg">
-          <div class="inline-block min-w-full align-middle">
-            <div class="overflow-hidden shadow sm:rounded-lg">
-              <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-600">
-               <!--  <thead class="bg-gray-50 dark:bg-gray-700">
-                  <tr>
-                    <th class="p-4 w-0 text-left text-xs font-medium tracking-wider text-gray-500 dark:text-white">
-                      #
-                    </th>
-                    <th class="p-4 text-left text-xs font-medium tracking-wider text-gray-500 dark:text-white">
-                      句子
-                    </th>
-                    <th class="p-4 text-left text-xs font-medium tracking-wider text-gray-500 dark:text-white">
-                      翻译
-                    </th>
-                  
-                    <th class="p-4 text-left text-xs font-medium tracking-wider text-gray-500 dark:text-white">
-                      备注
-                    </th>
-                  </tr>
-                </thead> -->
-                <tbody class="bg-white dark:bg-gray-800 border-b-1">
-                  <template v-for="item of sentences" :key="item.no" class="text-sm text-gray-900 dark:text-white">
-                    <template v-if="item.no == null">
-                      <tr class="border-t-1 border-x-1">
-                        <td colspan="5" class="p-4 font-bold text-xl">{{ item.title }}</td>
-                      </tr>
-                    </template>
-                    <template v-else>
-                      <tr class="border-t-1">
-                        <td class="p-4 border-x-1" rowspan="2">
-                          {{ item.no }}
-                        </td>
-                        <td class="p-4 border-r-1" rowspan="2">
-                          {{ item.sentence }}
-                        </td>
-                        <td class="p-4 border-b-1 flex items-center">
-                          <div class="mr-4" title="来自书上标准答案"><i class="i-carbon-book block"></i></div>
-                          <div>{{ item.translationFromBook }}</div>
-                        </td>
-                        <td class="p-4 border-x-1 w-30% whitespace-pre-line" rowspan="2">
-                          {{ item.remark }}
-                        </td>
-                      </tr>
-                      <tr>
-                        <td class="p-4 flex items-center">
-                          <div class="mr-4" title="来自 ChatGPT"><i class="i-simple-icons-openai block"></i></div>
-                          <div>{{ item.chatgpt }}</div>
-                        </td>
-                      </tr>
-                    </template>
-                  </template>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    </section>
   </div>
 </template>

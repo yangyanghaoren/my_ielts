@@ -4,51 +4,100 @@
   flex-direction: column;
 }
 
-.group-color-10 {
-    border-left: 8px solid #c5e4d4;
-}
-.group-color-11 {
-    border-left: 8px solid #fffdd7;
-}
-.group-color-12 {
-    border-left: 8px solid #fae0bf;
-}
-.group-color-13 {
-    border-left: 8px solid #f8c7dc;
-}
-.group-color-14 {
-    border-left: 8px solid #c7cde7;
+html {
+  background: #f8fafc;
 }
 
+html.dark {
+  background: #020617;
+}
+
+body {
+  min-width: 320px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.82), rgba(248, 250, 252, 0.96)),
+    #f8fafc;
+}
+
+html.dark body {
+  background:
+    linear-gradient(180deg, rgba(15, 23, 42, 0.96), rgba(2, 6, 23, 0.98)),
+    #020617;
+}
+
+.app-shell {
+  background:
+    linear-gradient(180deg, rgba(241, 245, 249, 0.92), rgba(248, 250, 252, 0.98)),
+    #f8fafc;
+}
+
+html.dark .app-shell {
+  background:
+    linear-gradient(180deg, rgba(15, 23, 42, 0.96), rgba(2, 6, 23, 0.98)),
+    #020617;
+}
+
+audio.chapter {
+  height: 40px;
+  border-radius: 8px;
+}
 
 .group-color-0 {
-    border-left: 8px solid #E63946;
+  border-left: 4px solid #0f172a;
 }
+
 .group-color-1 {
-    border-left: 8px solid #F1FAEE;
+  border-left: 4px solid #0891b2;
 }
+
 .group-color-2 {
-    border-left: 8px solid #A8DADC;
+  border-left: 4px solid #059669;
 }
+
 .group-color-3 {
-    border-left: 8px solid #457B9D;
+  border-left: 4px solid #d97706;
 }
+
 .group-color-4 {
-    border-left: 8px solid #1D3557;
+  border-left: 4px solid #7c3aed;
 }
 
 .group-color-5 {
-    border-left: 8px solid #355070;
+  border-left: 4px solid #e11d48;
 }
+
 .group-color-6 {
-    border-left: 8px solid #6d597a;
+  border-left: 4px solid #2563eb;
 }
+
 .group-color-7 {
-    border-left: 8px solid #b56576;
+  border-left: 4px solid #0d9488;
 }
+
 .group-color-8 {
-    border-left: 8px solid #e56b6f;
+  border-left: 4px solid #ca8a04;
 }
+
 .group-color-9 {
-    border-left: 8px solid #eaac8b;
+  border-left: 4px solid #9333ea;
+}
+
+.group-color-10 {
+  border-left: 4px solid #475569;
+}
+
+.group-color-11 {
+  border-left: 4px solid #0284c7;
+}
+
+.group-color-12 {
+  border-left: 4px solid #16a34a;
+}
+
+.group-color-13 {
+  border-left: 4px solid #dc2626;
+}
+
+.group-color-14 {
+  border-left: 4px solid #4f46e5;
 }

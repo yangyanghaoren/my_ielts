@@ -1,33 +1,40 @@
 <template>
-  <div class="px-4 pt-6 2xl:px-0">
-    <div class="mb-4 border border-gray-200 rounded-lg bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800 sm:p-6">
-      <ul class="rounded-lg text-center text-sm font-medium text-gray-500 shadow sm:flex divide-x divide-gray-200 dark:text-gray-400 dark:divide-gray-700">
-        <li class="w-full">
-          <router-link
-            to="/listening"
-            class="inline-block w-full rounded-l-lg bg-gray-100 p-4 text-gray-900 dark:bg-gray-700 dark:text-white"
-          >
-            IELTS 听力基本概念
-          </router-link>
-        </li>
-        <li class="w-full">
-          <router-link
-            to="/listening/keyword"
-            class="inline-block w-full bg-gray-100 p-4 text-gray-900 dark:bg-gray-700 dark:text-white"
-          >
-            听力 179 考点词
-          </router-link>
-        </li>
-        <li class="w-full">
-          <router-link
-            to="/listening/corpus"
-            class="inline-block w-full rounded-r-lg bg-gray-100 p-4 text-gray-900 dark:bg-gray-700 dark:text-white"
-          >
-            雅思听力王语料库
-          </router-link>
-        </li>
-      </ul>
+  <div class="space-y-5 py-8">
+    <section class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-950 sm:p-6">
+      <div class="mb-5">
+        <h1 class="text-2xl font-black text-slate-950 dark:text-white">
+          听力训练
+        </h1>
+        <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">
+          基础方法、考点词和语料练习集中整理。
+        </p>
+      </div>
+
+      <nav class="grid gap-2 rounded-lg border border-slate-200 bg-slate-50 p-1 text-sm font-semibold dark:border-slate-800 dark:bg-slate-900 sm:grid-cols-3">
+        <router-link
+          to="/listening"
+          class="rounded-md px-4 py-3 text-center text-slate-600 transition hover:bg-white hover:text-slate-950 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white"
+          :class="{ 'bg-white text-slate-950 shadow-sm dark:bg-slate-800 dark:text-white': $route.path === '/listening' }"
+        >
+          听力基础概念
+        </router-link>
+        <router-link
+          to="/listening/keyword"
+          class="rounded-md px-4 py-3 text-center text-slate-600 transition hover:bg-white hover:text-slate-950 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white"
+          :class="{ 'bg-white text-slate-950 shadow-sm dark:bg-slate-800 dark:text-white': $route.path === '/listening/keyword' }"
+        >
+          听力 179 考点词
+        </router-link>
+        <router-link
+          to="/listening/corpus"
+          class="rounded-md px-4 py-3 text-center text-slate-600 transition hover:bg-white hover:text-slate-950 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white"
+          :class="{ 'bg-white text-slate-950 shadow-sm dark:bg-slate-800 dark:text-white': $route.path === '/listening/corpus' }"
+        >
+          听力语料练习
+        </router-link>
+      </nav>
+
       <router-view />
-    </div>
+    </section>
   </div>
 </template>

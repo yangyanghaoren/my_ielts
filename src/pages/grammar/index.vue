@@ -1,30 +1,30 @@
 <template>
-  <div class="px-4 pt-6 2xl:px-0">
+  <div class="py-8">
     <div
-      class="mb-4 border border-gray-200 rounded-lg bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800 sm:p-6"
+      class="mb-4 rounded-xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-950 sm:p-6"
     >
-      <h3 class="mb-4 text-xl font-semibold dark:text-white">
+      <h3 class="mb-4 text-xl font-bold text-slate-950 dark:text-white">
         概述
       </h3>
       <div class="mb-4">
         我尝试过很多语法教程最终都没有学下去，只有这个版本取出了最需要的部分；学完这个就会分析长难句了！
       </div>
-      <h3 class="mb-4 text-xl font-semibold dark:text-white">
+      <h3 class="mb-4 text-xl font-bold text-slate-950 dark:text-white">
         视频
       </h3>
       <iframe style="width: 100%; aspect-ratio: 16 / 9;" class="mb-4" src="https://www.youtube.com/embed/bxvyZwACfNk?si=_dXajzpGFCYZ1gOa" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-      <h3 class="mb-4 text-xl font-semibold dark:text-white">
+      <h3 class="mb-4 text-xl font-bold text-slate-950 dark:text-white">
         讲义
       </h3>
       <div class="mb-4">
         视频配套讲义：
         <a
           class="truncate text-sm font-normal text-primary-700 dark:text-primary-500 hover:underline"
-          href="grammar/雅思基础语法配套课程讲义.pdf" download="雅思基础语法配套课程讲义.pdf"
-        >雅思基础语法配套课程讲义.pdf</a>
+          href="grammar/basic-grammar-notes.pdf" download="basic-grammar-notes.pdf"
+        >basic-grammar-notes.pdf</a>
       </div>
 
-      <h3 class="mb-4 text-xl font-semibold dark:text-white">
+      <h3 class="mb-4 text-xl font-bold text-slate-950 dark:text-white">
         思维导图
       </h3>
       <div class="mb-4">
@@ -1043,7 +1043,7 @@
                   <text
                     id="kity_text_22" text-rendering="inherit" font-size="24" dy=".8em" y="2710.699999809265"
                     x="32.5"
-                  >雅思语法</text>
+                  >语法框架</text>
                 </g>
               </g>
               <g id="kity_g_12">

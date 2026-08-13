@@ -1,139 +1,54 @@
-<p><br></p>
+# English Prep Lab
 
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="public/salvation_lies_within_IELTS_dark.svg">
-  <source media="(prefers-color-scheme: light)" srcset="public/salvation_lies_within_IELTS_light.svg">
-  <img alt="Slogan: Salvation lies within IELTS" src="public/salvation_lies_within_IELTS_light.svg">
-</picture>
+English Prep Lab 是一个面向英语备考的个人练习站点，重点放在高频词汇、听力替换、阅读同义表达、写作句型和语法复习。项目已经整理成可直接部署到 GitHub Pages 的 Vue 单页应用。
 
-<p><br></p>
-<p><br></p>
-<h1 align='center'>
-  My <span>IELTS</span>
-</h1>
+在线地址：[https://yangyanghaoren.github.io/my_ielts/#/](https://yangyanghaoren.github.io/my_ielts/#/)
 
-<h2>在线地址 <a href="https://yangyanghaoren.github.io/my_ielts/#/">https://yangyanghaoren.github.io/my_ielts/</a></h2>
+## 功能
 
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="public/screenshot/screenshot-home-dark.png">
-  <source media="(prefers-color-scheme: light)" srcset="public/screenshot/screenshot-home-light.png">
-  <img alt="Home" src="public/screenshot/screenshot-home-light.png">
-</picture>
+- 主题词汇训练：分类筛选、关键词搜索、音频播放、词义/例句查看。
+- 听写练习：输入拼写、自动判错、错词复制、按掌握类型筛选。
+- 单词跟打：按分类练习输入速度和单词熟悉度。
+- 听力、阅读、写作、语法：保留常用复习资料和练习入口。
+- 深色模式：支持本地记忆显示偏好。
 
+## 技术栈
 
-## 概述
+- Vue 3
+- Vue Router
+- Vite
+- UnoCSS
+- VueUse
 
-雅思备考资料，包含词汇、语法、听说读写最出名的一些内容
-
-- [x] 词汇练习模式
-
-## 规划栏目
-
-### 词汇
-
-> 2026-03 增加打字练习模式，感谢 [@Tommy1109255](https://github.com/Tommy1109255)
-
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="public/screenshot/typing-vocabulary-dark.png">
-  <source media="(prefers-color-scheme: light)" srcset="public/screenshot/typing-vocabulary-light.png">
-  <img alt="Vocabulary" src="public/screenshot/typing-vocabulary-light.png">
-</picture>
-
-主题词汇训练
-
-- 雅思核心词汇
-- 按学习场景整理
-- 搜索、筛选、听写和跟打练习
-
-词列表
-
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="public/screenshot/screenshot-vocabulary-dark.png">
-  <source media="(prefers-color-scheme: light)" srcset="public/screenshot/screenshot-vocabulary-light.png">
-  <img alt="Vocabulary" src="public/screenshot/screenshot-vocabulary-light.png">
-</picture>
-
-练习模式
-
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="public/screenshot/screenshot-vocabulary-training-mode-dark.png">
-  <source media="(prefers-color-scheme: light)" srcset="public/screenshot/screenshot-vocabulary-training-mode-light.png">
-  <img alt="Vocabulary Training Mode" src="public/screenshot/screenshot-vocabulary-training-mode-light.png">
-</picture>
-
-### 语法
-
-语法基础复习
-
-- 视频
-- 讲义
-- 思维导图
-
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="public/screenshot/screenshot-grammar-dark.png">
-  <source media="(prefers-color-scheme: light)" srcset="public/screenshot/screenshot-grammar-light.png">
-  <img alt="Grammar" src="public/screenshot/screenshot-grammar-light.png">
-</picture>
-
-### 听力
-
-了解雅思听力，以及考试中的一些基本原则、技巧
-
-- 基本概念和应试技巧
-- 听力 179 考点词
-- [WIP] 雅思听力王语料库
-
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="public/screenshot/screenshot-listening-dark.png">
-  <source media="(prefers-color-scheme: light)" srcset="public/screenshot/screenshot-listening-light.png">
-  <img alt="Listening" src="public/screenshot/screenshot-listening-light.png">
-</picture>
-
-### 口语
-
-TODO
-
-### 阅读
-
-- 538 考点词同义替换
-
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="public/screenshot/screenshot-reading-dark.png">
-  <source media="(prefers-color-scheme: light)" srcset="public/screenshot/screenshot-reading-light.png">
-  <img alt="Reading" src="public/screenshot/screenshot-reading-light.png">
-</picture>
-
-
-### 写作
-
-写作相关内容，从基础开始
-
-- 100 句翻译练习与大小作文复习
-
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="public/screenshot/screenshot-writing-dark.png">
-  <source media="(prefers-color-scheme: light)" srcset="public/screenshot/screenshot-writing-light.png">
-  <img alt="Writing" src="public/screenshot/screenshot-writing-light.png">
-</picture>
-
-## 开发
-
-本项目使用
-
-- [Vitesse Lite](https://github.com/antfu/vitesse-lite) 作为模板开发
-- 样式部分参照了 [Flowbite](https://github.com/themesberg/flowbite) & [Flowbite Admin Dashboard](https://flowbite-admin-dashboard.vercel.app)
-
-所以需要对 Vue3、TailWindCSS 有一定的了解才能二次开发
+## 本地开发
 
 ```bash
-# 安装依赖
 pnpm i
-
-# 开发模式
 pnpm run dev
+```
 
-# 构建
+默认开发地址：
+
+```text
+http://127.0.0.1:3333/
+```
+
+## 构建
+
+```bash
 pnpm run build
 ```
 
-## 禁止将本项目用于任何商业目的！！！
+如在 Windows 上遇到 `dist` 清理占用问题，可以先用下面命令做编译验证：
+
+```bash
+node_modules\.bin\vite.cmd build --emptyOutDir false
+```
+
+## 部署
+
+当前仓库通过 GitHub Actions 从 `dev` 分支构建，并发布到 GitHub Pages。推送到 `dev` 后会自动触发部署。
+
+## 说明
+
+本项目仅用于个人学习和练习，不用于商业用途。

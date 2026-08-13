@@ -36,77 +36,80 @@ const menus = reactive([
     link: '/writing',
   },
 ])
+
 const showMobileMenu = ref(false)
 </script>
 
 <template>
-  <header>
-    <nav class="fixed z-30 w-full border-b border-gray-200 bg-white px-4 py-3 dark:border-gray-700 dark:bg-gray-800">
-      <div class="mx-auto max-w-screen-2xl flex items-center justify-between">
-        <div class="flex items-center justify-start">
-          <a href="/" class="mr-14 flex">
-            <span class="hidden self-center whitespace-nowrap text-2xl font-semibold sm:flex dark:text-white">My
-              <span class="ml-1 text-red-600"> IELTS</span>
+  <header class="fixed inset-x-0 top-0 z-30 border-b border-slate-200/70 bg-white/88 backdrop-blur-xl dark:border-slate-800 dark:bg-slate-950/86">
+    <nav class="mx-auto max-w-screen-2xl px-4 sm:px-6 lg:px-8">
+      <div class="flex h-16 items-center justify-between gap-4">
+        <div class="flex min-w-0 items-center gap-8">
+          <router-link to="/" class="flex items-center gap-3" @click="showMobileMenu = false">
+            <span class="grid h-10 w-10 place-items-center rounded-lg bg-slate-950 text-white shadow-sm dark:bg-white dark:text-slate-950">
+              <i class="i-carbon-education text-xl" />
             </span>
+            <span class="hidden min-w-0 sm:block">
+              <span class="block whitespace-nowrap text-base font-bold leading-5 text-slate-950 dark:text-white">English Prep Lab</span>
+              <span class="block whitespace-nowrap text-xs leading-4 text-slate-500 dark:text-slate-400">Practice workspace</span>
+            </span>
+          </router-link>
 
-          </a>
-          <!-- Desktop menu -->
-          <div class="hidden w-full items-center justify-between lg:order-1 lg:w-auto lg:flex">
-            <ul class="mt-4 flex flex-col items-center justify-items-center text-center align-middle text-sm font-medium lg:mt-0 lg:flex-row space-x-6 xl:space-x-8">
-              <li
-                v-for="m in menus"
-                :key="m.label"
+          <ul class="hidden items-center gap-1 rounded-lg border border-slate-200 bg-slate-50 p-1 text-sm font-medium dark:border-slate-800 dark:bg-slate-900 lg:flex">
+            <li v-for="m in menus" :key="m.label">
+              <router-link
+                :to="m.link"
+                class="flex items-center gap-1.5 rounded-md px-3 py-2 text-slate-600 transition hover:bg-white hover:text-slate-950 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white"
+                :class="{ 'bg-white text-slate-950 shadow-sm dark:bg-slate-800 dark:text-white': $route.path === m.link }"
               >
-                <router-link
-                  :class="$route.path === m.link ? 'block flex flex-row items-center rounded text-primary-700 dark:text-primary-500' : 'block flex flex-row items-center text-gray-700 dark:text-gray-400 hover:text-primary-700 dark:hover:text-white'"
-                  :to="m.link"
-                >
-                  <i class="mr-1 inline-block" :class="m.icon" /> {{ m.label }}
-                </router-link>
-              </li>
-            </ul>
-          </div>
+                <i class="inline-block" :class="m.icon" />
+                {{ m.label }}
+              </router-link>
+            </li>
+          </ul>
         </div>
-        <div class="flex items-center justify-between lg:order-2">
+
+        <div class="flex items-center gap-2">
           <a
             href="https://github.com/yangyanghaoren/my_ielts"
             target="_blank"
-            class="rounded-lg p-2 text-gray-500 hover:bg-gray-100 dark:text-gray-400 hover:text-gray-900 focus:ring-4 focus:ring-gray-300 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-600"
+            class="grid h-10 w-10 place-items-center rounded-lg border border-slate-200 bg-white text-slate-600 transition hover:border-slate-300 hover:text-slate-950 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300 dark:hover:text-white"
+            title="GitHub"
           >
             <div i-simple-icons-github />
           </a>
-          <button class="ml-2 rounded-lg p-2 text-gray-500 hover:bg-gray-100 dark:text-gray-400 hover:text-gray-900 focus:ring-4 focus:ring-gray-300 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-600" @click="toggleDark()">
+          <button
+            class="grid h-10 w-10 place-items-center rounded-lg border border-slate-200 bg-white text-slate-600 transition hover:border-slate-300 hover:text-slate-950 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300 dark:hover:text-white"
+            title="切换深色模式"
+            @click="toggleDark()"
+          >
             <div i-carbon-sun dark:i-carbon-moon />
           </button>
 
           <button
             type="button"
-            class="items-center rounded-lg p-2 text-gray-500 md:ml-2 lg:hidden hover:bg-gray-100 dark:text-gray-400 hover:text-gray-900 focus:ring-4 focus:ring-gray-300 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-600"
+            class="grid h-10 w-10 place-items-center rounded-lg border border-slate-200 bg-white text-slate-600 transition hover:border-slate-300 hover:text-slate-950 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300 dark:hover:text-white lg:hidden"
+            aria-label="打开导航"
             @click="showMobileMenu = !showMobileMenu"
           >
-            <span class="sr-only">Open menu</span>
-            <svg class="h-6 w-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd" /></svg>
+            <i :class="showMobileMenu ? 'i-carbon-close' : 'i-carbon-menu'" />
           </button>
         </div>
       </div>
-    </nav>
-    <nav class="bg-white dark:bg-gray-900">
-      <!-- Mobile menu -->
+
       <ul
         v-show="showMobileMenu"
-        class="mt-0 w-full flex-col pt-16 text-sm font-medium lg:hidden"
+        class="grid gap-1 border-t border-slate-200 py-3 text-sm font-medium dark:border-slate-800 lg:hidden"
       >
-        <li
-          v-for="m in menus"
-          :key="m.label"
-          class="block border-b dark:border-gray-700"
-        >
+        <li v-for="m in menus" :key="m.label">
           <router-link
-            class="block px-4 py-3 text-gray-900 lg:px-0 lg:py-0 dark:text-white lg:hover:underline"
             :to="m.link"
+            class="flex items-center gap-2 rounded-lg px-3 py-2.5 text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-900"
+            :class="{ 'bg-slate-100 text-slate-950 dark:bg-slate-900 dark:text-white': $route.path === m.link }"
             @click="showMobileMenu = false"
           >
-            <i class="mr-1 inline-block" :class="m.icon" /> {{ m.label }}
+            <i class="inline-block" :class="m.icon" />
+            {{ m.label }}
           </router-link>
         </li>
       </ul>

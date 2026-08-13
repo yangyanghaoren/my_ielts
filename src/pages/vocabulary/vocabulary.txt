@@ -819,7 +819,7 @@ obscure|adj.|难以理解的|Rules for the game are somewhat obscure
 instil/instill|v.| 逐渐灌输|A sense of duty must be instilled in our children
 cram|v.|把...塞进；（为应考）临时死记硬背|Lectures were all called off, so students can cram for the semester finals
 emphasise/emphasize|v.|强调；着重|I try to emphasize my strengths without sounding boastful|boastful adj. 自夸的
-enhance|v.|提高；增强|A good score of IELTS will enhance my change of getting the offer
+enhance|v.|提高；增强|A good score of English exam will enhance my change of getting the offer
 ---
 enable|v.|使能够|This dictionary will enable you to understand English words
 inspire|v.|鼓舞；给...灵感|Our task is to motivate the voters and inspire them to join our cause|join one's cause 参加某人的事业
