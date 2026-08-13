@@ -1,6 +1,7 @@
 <!-- eslint-disable eslint-comments/no-unlimited-disable -->
 <script setup generic="T extends any, O extends any">
 import vocabulary from './vocabulary'
+import { getCategoryLabel } from './categoryLabels'
 
 const CHAPTER_KEY = 'vocabulary_chapter'
 const EXTRA_OVERRIDES_KEY = 'vocabulary_extra_overrides'
@@ -332,9 +333,9 @@ function copyAllError() {
       <div class="items-center justify-between lg:flex">
         <div class="mb-4 lg:mb-0">
           <h3 class="mb-2 text-xl font-bold text-gray-900 dark:text-white">
-            雅思词汇真经
+            主题词汇训练
           </h3>
-          <span class="text-base font-normal text-gray-500 dark:text-gray-400">涵盖雅思必备核心词，逻辑词群记忆法</span>
+          <span class="text-base font-normal text-gray-500 dark:text-gray-400">按学习场景整理常用词，支持搜索、筛选、听写和例句复习</span>
         </div>
         <div class="items-center sm:flex">
           <div class="flex flex-wrap items-center gap-2">
@@ -346,7 +347,7 @@ function copyAllError() {
                 全部章节
               </option> -->
               <option v-for="(_, k) in refVocabulary" :key="k" :value="k">
-                {{ k }}
+                {{ getCategoryLabel(k) }}
               </option>
             </select>
             <div ref="filterDropdownRef" class="relative">
@@ -485,7 +486,7 @@ function copyAllError() {
                     >
                       <div class="flex flex-row">
                         <div class="flex flex-1 items-center">
-                          <span class="text-lg">{{ category }}</span>
+                          <span class="text-lg">{{ getCategoryLabel(category) }}</span>
                           （ {{ refVocabulary[category].groupCount }} 组 {{ refVocabulary[category].wordCount }} 个词 ）
                           <span v-if="isFilterActive" class="ml-2 text-gray-500 dark:text-gray-200">
                             已筛选/匹配 {{ filteredWordCount }} 个词

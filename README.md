@@ -9,7 +9,7 @@
 <p><br></p>
 <p><br></p>
 <h1 align='center'>
-  My <span>IELTS™</span>
+  My <span>IELTS</span>
 </h1>
 
 <h2>在线地址 <a href="https://yangyanghaoren.github.io/my_ielts/#/">https://yangyanghaoren.github.io/my_ielts/</a></h2>
@@ -39,11 +39,11 @@
   <img alt="Vocabulary" src="public/screenshot/typing-vocabulary-light.png">
 </picture>
 
-雅思词汇真经（刘洪波橙色的那本）
+主题词汇训练
 
 - 雅思核心词汇
-- 逻辑词群记忆法
-- 原书音频
+- 按学习场景整理
+- 搜索、筛选、听写和跟打练习
 
 词列表
 
@@ -63,7 +63,7 @@
 
 ### 语法
 
-新东方雅思语法
+语法基础复习
 
 - 视频
 - 讲义
@@ -108,7 +108,7 @@ TODO
 
 写作相关内容，从基础开始
 
-- 顾家北手把手教你雅思写作 V6.0 —— 100 句翻译练习
+- 100 句翻译练习与大小作文复习
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="public/screenshot/screenshot-writing-dark.png">

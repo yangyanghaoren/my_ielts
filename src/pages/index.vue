@@ -10,13 +10,13 @@ const menus = reactive([
     label: '词汇',
     icon: 'i-carbon-chart-histogram',
     link: '/vocabulary',
-    desc: '包含雅思词汇真经内容，按场景分组',
+    desc: '主题词汇整理与练习，支持搜索、筛选、听写和跟打',
   },
   {
     label: '语法',
     icon: 'i-carbon-load-balancer-vpc ',
     link: '/grammar',
-    desc: '新东方雅思语法课程，针对雅思考试设计，思维导图',
+    desc: '语法基础讲义、结构梳理和复习资料',
   },
   {
     label: '听力',

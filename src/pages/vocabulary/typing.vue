@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import vocabulary from './vocabulary'
+import { getCategoryLabel } from './categoryLabels'
 
 const CHAPTER_KEY = 'vocabulary_typing_chapter'
 const chapters = Object.keys(vocabulary)
@@ -121,7 +122,7 @@ onMounted(() => {
             v-for="c in chapters"
             :key="c"
             :value="c"
-          >{{ c }}</option>
+          >{{ getCategoryLabel(c) }}</option>
         </select>
       </div>
 
